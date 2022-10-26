@@ -35,11 +35,17 @@ export async function stringToTitle (string) {
     return titleString
 }
 
+//CREATE LIST 
+export async function createList (listName) {
+    const list = titleToString(listName)
+    await List.create({listName: list})
+    console.log(`"${listName}" : Has been created`);
+}
 
 // RETRIEVE AND SAVE MAIN LIST OBJECT ID
 export async function retrieveListID (list) {
     const listIDSearch = await List.find({ listName: list })
-    const listID = await listIDSearch[0]._id.toString()
+    const listID = listIDSearch[0]._id.toString()
     return listID
 };
 
