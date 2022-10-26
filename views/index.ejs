@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grocery List</title>
+
+    <link rel="icon" type="image/x-icon" href="images/favicon.png" />
+
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400&family=Yanone+Kaffeesatz:wght@400;500&display=swap" rel="stylesheet"> 
+  </head>
+  <body>
+    <div id="opacity-focus-id"></div>
+    <!-- <div id="opacity-focus-id-delete"></div> -->
+    
+    <div id="top">
+      <div id="dropdown" class="dropdown">
+        <div onclick="dropdownMenu()" class="list-dropdown-button">
+          <p>My Lists</p>
+          <div class="triagle"></div>
+        </div>
+        <div id="dropdown-items" class="dropdown-list" >
+          <!-- EJS looping throwg list of lists and building a dropdown menu of lists -->
+          <% dropdownList.forEach((list) => { %> 
+            <div class="lists-dropdown-item">
+              <a href=<%= list.listName %>><%= list.listTitle %></a>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <div class="current-list-title">
+        <h1><%= listTitle %> </h1>
+      </div>
+
+    </div>
+    <div id="middle">
+      <div class="new-item-box">
+        <form action="<%= newItemPost %>" method="post">
+          <!-- form to send data to app.js / action = app.js and method = post method-->
+          <input
+            class="new-item-input"
+            type="text"
+            name="newItem"
+            placeholder="New Item"
+            autocomplete="off"
+          />
+          <button class="new-item-btn" type="submit">+</button>
+        </form>
+      </div>
+      <div class="list">
+        <!-- EJS For loop - creates one paragraph for each item on app.js list array (itemList) -->
+        <% currentListItems.forEach((item) => { %>
+          <div class="item">
+            <form class="checkbox-form" action="<%= listName %>/checkItem" method="post">
+              <input type="checkbox" class="check" id="check-<%=item._id%>" name="check" value="<%=item._id%>" onChange="this.form.submit()" <%= item.checkQuery %> />
+
+              <input type="checkbox" class="uncheckbox <%= item.hideClass %>" id="uncheck-<%=item._id%>" name="uncheck" value="<%=item._id%>" onChange="this.form.submit()" <%= item.uncheckQuery %> />
+
+              <label id="<%= item.name %>-checkbox-text"><%= item.name%></label>
+
+            </form> 
+            
+            <form action="<%= listName %>/deleteItem" method="post">
+              <button class="del-item-btn" type="submit" name="delete" value="<%=item._id%>"></button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+      <div class="more-options">
+
+        <form action="<%= listName %>/selectAll" method="post">
+          <button id="select-all-btn" type="submit" name="selectall"></button>
+        </form>
+
+        <!-- ------------------- -->
+        <!-- NEW LIST HIDDEN BOX -->
+        <!-- ------------------- -->
+        <button id="new-list-btn"></button>
+        
+        <div id="new-list-box" class="new-list-box new-list-box-display">
+          <!-- EJS NEW LIST ROUTE -->
+          <form action="<%= listName %>/newListBox" method="post">
+            <input
+              class="new-list-box-input"
+              type="text"
+              name="newList"
+              placeholder="New List"
+              autocomplete="off"
+            />
+            <button class="new-list-btn" type="submit">+</button>
+          </form>
+        </div>
+
+        <!-- ---------------------- -->
+        <!--  DELETE ALL HIDDEN BOX -->
+        <!-- ---------------------- -->
+        <button id="deleteAll-btn"></button>
+        <div id="delete-all-box" class="delete-all-box-off"> 
+          <!--  EJS DELETE ALL ROUTE -->
+          <div class="delete-all-box-flex">
+            <form action="<%= listName %>/deleteAll" method="post">
+              <button type="submit" name="deleteall">Delete All Items</button>
+            </form>
+            <!-- EJS DELETE LIST BUTTON ROUTE -->
+            <form action="<%= listName %>/deleteList" method="post">
+              <button type="submit" name="deleteall">Delete List</button>
+            </form>
+          </div>
+      </div>
+      </div>
+
+      
+    </div>
+    <div id="footer">
+      <p class="created-by">Created by Tavares</p>
+    </div>
+    <script src="/script.js"></script>
+  </body>
+</html>
